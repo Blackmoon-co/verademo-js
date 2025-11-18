@@ -2,9 +2,13 @@ name: veracode-build
 
 on:
   workflow_call:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  build_and_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
