@@ -1,28 +1,19 @@
-name: Veracode Scan
+name: veracode-build
 
 on:
-  repository_dispatch:
-    types: [veracode-build] 
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]  # ← AGREGA ESTO
-
+  workflow_call:
 
 jobs:
-  build_and_scan:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 🏗️ Empaquetar el proyecto (excluyendo carpetas no necesarias)
       - name: Package source for Veracode
         run: |
           zip -r app.zip . -x ".git/*" "node_modules/*" ".github/*"
 
-      # 📦 Subir artefacto que usará Veracode
       - name: Upload artifact for Veracode
         uses: actions/upload-artifact@v4
         with:
