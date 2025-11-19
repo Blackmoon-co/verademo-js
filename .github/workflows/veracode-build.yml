@@ -10,10 +10,17 @@ on:
 jobs:
   build_and_scan:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Package source for Veracode
         run: |
-          zip -r veracode-artifact.zip . -x ".git/*" "node_modules/*" ".github/*"
+          zip -r app.zip . -x ".git/*" "node_modules/*" ".github/*"
+
+      - name: Upload artifact for debugging (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: veracode-artifact
+          path: app.zip
