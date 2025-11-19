@@ -2,11 +2,12 @@ name: veracode-build
 
 on:
   workflow_call:
+  repository_dispatch:
+    types: [veracode-build]
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  
 
 jobs:
   build_and_scan:
