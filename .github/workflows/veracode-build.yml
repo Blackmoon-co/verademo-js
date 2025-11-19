@@ -1,27 +1,24 @@
 name: veracode-build
 
 on:
-  workflow_call:
-  repository_dispatch:
-    types: [veracode-build]
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build_and_scan:
+  build_and_package:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Package source for Veracode
         run: |
-          zip -r app.zip . -x ".git/*" "node_modules/*" ".github/*"
+          zip -r app.zip . -x ".git/*" "node_modules/*" ".github/*" "*.md"
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload package for log
+        uses: actions/upload-artifact@v4
         with:
-          name: veracode-artifact
+          name: app
           path: app.zip

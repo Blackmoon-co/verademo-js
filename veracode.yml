@@ -1,3 +1,17 @@
 veracode_static_scan:
-  artifact_file: veracode-artifact/app.zip
-  use_custom_workflow: veracode-build
+  artifact_file: app.zip
+
+  push:
+    trigger: true
+    branches_to_run:
+      - '*'
+
+  pull_request:
+    trigger: true
+    action:
+      - opened
+      - synchronize
+    target_branch:
+      - default_branch
+
+  dispatch: true
