@@ -1,22 +1,23 @@
 name: veracode-build
 
 on:
-  repository_dispatch:
-    types: [veracode-build]
+  workflow_call:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build_and_package:
+  build_and_scan:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Package source
-        run: zip -r app.zip . -x ".git/*" "node_modules/*" ".github/*"
+      - name: Package source for Veracode
+        run: |
+          zip -r app.zip . -x ".git/*" "node_modules/*" ".github/*"
 
       - uses: actions/upload-artifact@v4
         with:
