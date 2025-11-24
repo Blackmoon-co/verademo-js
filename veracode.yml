@@ -1,17 +1,31 @@
 veracode_static_scan:
   artifact_file: app.zip
 
+  # ---- PUSH ----
   push:
     trigger: true
     branches_to_run:
-      - '*'
+      - "feature/*"
+      - "develop"
+      - "main"
+      - "master"
 
+  # ---- PR ----
   pull_request:
     trigger: true
     action:
       - opened
       - synchronize
     target_branch:
-      - default_branch
+      - "main"
+
+  # ---- CONTROL PLATAFORMA ----
+  analysis_branch: "main"          # El upload-and-scan real está en main
+  analysis_on_platform: true       # Guardar en Veracode Platform
+  policy: "Veracode Recommended Medium + SCA"
+
+  break_build_policy_findings: true
+  break_build_invalid_policy: true
+  break_build_on_error: false
 
   dispatch: true
