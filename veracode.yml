@@ -13,29 +13,27 @@ veracode_static_scan:
       analysis_on_platform: false
 
     - branch_name: develop
-      sandbox: true
       analysis_on_platform: true
 
     - branch_name: main
-      sandbox: false
       analysis_on_platform: true
 
   break_build_policy_findings: true
   break_build_invalid_policy: true
   break_build_on_error: false
   policy: 'Veracode Recommended Medium + SCA'
-  dispatch: true
+
 
 veracode_sca_scan:
   push:
     trigger: true
     branches_to_run:
-     - 'feature/**'
-     - develop
+      - 'feature/**'
+      - develop
+      - main
 
   break_build_on_error: true
   break_build_policy_findings: true
-  dispatch: true
 
 
 veracode_iac_secrets_scan:
@@ -43,9 +41,8 @@ veracode_iac_secrets_scan:
     trigger: true
     branches_to_run:
       - 'feature/**'
-      - main
       - develop
+      - main
 
   break_build_policy_findings: true
   break_build_on_error: true
-  dispatch: true
