@@ -1,93 +1,74 @@
-# -----------------------------
-# SAST – PIPELINE SCAN (FEATURE)
-# -----------------------------
 veracode_static_scan:
   artifact_file: app.zip
 
+  # --------- PIPELINE SCAN (feature/**) ----------
   push:
     trigger: true
     branches_to_run:
-      - 'feature/*'
+      - 'feature/**'
+    branches_to_exclude:
+      - 'develop'
+      - 'main'
+      - 'master'
 
-  analysis_on_platform: false          # ← NO sube a Veracode (pipeline scan)
-  break_build_policy_findings: false
+  # --------- SANDBOX (develop) ----------
+    # Para develop se usará el mismo pero con sandbox
+  sandbox:
+    - name: "develop"
+
+  # --------- UPLOAD & SCAN (main / master) ---------
+  upload_and_scan:
+    branches_to_run:
+      - 'main'
+      - 'master'
+
+  # --------- PULL REQUEST -----------
+  pull_request:
+    trigger: true
+    action:
+      - opened
+      - synchronize
+    target_branch:
+      - default_branch
+
+  # --------- OPCIONES ----------
+  analysis_on_platform: true
+  break_build_policy_findings: true
   break_build_invalid_policy: true
   break_build_on_error: true
 
   policy: 'Veracode Recommended Medium + SCA'
+
   create_code_scanning_alert: false
   create_issue: false
 
 
-# -----------------------------
-# SAST – SANDBOX (DEVELOP / QA)
-# -----------------------------
-veracode_static_scan_sandbox:
-  artifact_file: app.zip
 
-  push:
-    trigger: true
-    branches_to_run:
-      - 'develop'
-      - 'qa'
-
-  analysis_on_platform: true           # ← SÍ sube
-  sandbox_name: 'Dev-Sandbox'          # ← nombre del sandbox
-  break_build_policy_findings: false
-  break_build_invalid_policy: true
-  break_build_on_error: true
-
-  policy: 'Veracode Recommended Medium + SCA'
-
-
-# -----------------------------
-# SAST – UPLOAD & SCAN (MAIN)
-# -----------------------------
-veracode_static_scan_release:
-  artifact_file: app.zip
-
-  push:
-    trigger: true
-    branches_to_run:
-      - 'main'
-      - 'master'
-
-  analysis_on_platform: true           # ← Producción en Veracode
-  create_profile: true
-  break_build_policy_findings: true
-  break_build_invalid_policy: true
-  break_build_on_error: true
-
-  policy: 'Veracode Recommended Medium + SCA'
-
-
-# -----------------------------
-# SCA – DEVELOP y MAIN
-# -----------------------------
+# ----------------------------------
 veracode_sca_scan:
+# ----------------------------------
   push:
     trigger: true
     branches_to_run:
-      - 'develop'
+      - '*'
+
+  pull_request:
+    trigger: true
+    action:
+      - opened
+      - synchronize
+
+  break_build_policy_findings: true
+  break_build_on_error: true
+
+
+
+# ----------------------------------
+veracode_iac_secrets_scan:
+# ----------------------------------
+  push:
+    trigger: true
+    branches_to_run:
       - 'main'
       - 'master'
-
-  break_build_policy_findings: true
-  break_build_on_error: true
-
-  policy: 'Veracode Recommended Medium + SCA'
-
-
-# -----------------------------
-# IAC / SECRETS – SOLO FEATURE
-# -----------------------------
-veracode_iac_secrets_scan:
-  push:
-    trigger: true
-    branches_to_run:
-      - 'feature/*'
-
-  break_build_policy_findings: true
-  break_build_on_error: true
-
-  policy: 'Veracode Recommended Medium + SCA'
+      - 'develop'
