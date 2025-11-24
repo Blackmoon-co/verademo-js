@@ -1,31 +1,58 @@
 veracode_static_scan:
+  # Usas el zip que generas en tu workflow
   artifact_file: app.zip
 
-  # ---- PUSH ----
+  #
+  # FEATURE => Pipeline Scan (rápido y sin guardar en plataforma)
+  #
   push:
     trigger: true
     branches_to_run:
-      - "feature/*"
-      - "develop"
-      - "main"
-      - "master"
+      - 'feature/**'
 
-  # ---- PR ----
-  pull_request:
-    trigger: true
-    action:
-      - opened
-      - synchronize
-    target_branch:
-      - "main"
+  #
+  # DEVELOP => Sandbox Scan (sí sube pero a sandbox)
+  #
+  branch_rules:
+    - branch_name: develop
+      sandbox: true
+      analysis_on_platform: true
 
-  # ---- CONTROL PLATAFORMA ----
-  analysis_branch: "main"          # El upload-and-scan real está en main
-  analysis_on_platform: true       # Guardar en Veracode Platform
-  policy: "Veracode Recommended Medium + SCA"
 
+    - branch_name: main
+      sandbox: false
+      analysis_on_platform: true
+
+  # Rompe si hay errores de policy
   break_build_policy_findings: true
   break_build_invalid_policy: true
   break_build_on_error: false
 
+  policy: 'Veracode Recommended Medium + SCA'
+
+  dispatch: true
+
+
+veracode_sca_scan:
+  push:
+    trigger: true
+    branches_to_run:
+     - 'feature/**'
+     - develop
+
+  break_build_on_error: true
+  break_build_policy_findings: true
+  dispatch: true
+
+
+veracode_iac_secrets_scan:
+  push:
+    trigger: true
+    branches_to_run:
+      - 'feature/**'
+      - main
+      - develop
+
+  break_build_policy_findings: true
+  break_build_on_error: true
   dispatch: true
