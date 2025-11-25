@@ -4,29 +4,33 @@ veracode_static_scan:
   push:
     trigger: true
     branches_to_run:
-      - 'feature/**'
-      - develop
-      - main
-      
-  analysis_on_platform: 
+      - "feature/**"
+      - "develop"
+      - "main"
+
+  pull_request:
     trigger: true
-    branches_to_run:
-      - develop
-      - main
-      
+    action:
+      - opened
+      - synchronize
+    target_branch:
+      - "main"
+
+  analysis_branch: "main"
+  analysis_on_platform: true
+
   break_build_policy_findings: true
   break_build_invalid_policy: true
   break_build_on_error: false
-  policy: 'Veracode Recommended Medium + SCA'
+  policy: "Veracode Recommended Medium + SCA"
 
 
 veracode_sca_scan:
   push:
     trigger: true
     branches_to_run:
-      - 'feature/**'
-      - develop
-      - main
+      - "feature/**"
+      - "develop"
 
   break_build_on_error: true
   break_build_policy_findings: true
@@ -36,9 +40,8 @@ veracode_iac_secrets_scan:
   push:
     trigger: true
     branches_to_run:
-      - 'feature/**'
-      - develop
-      - main
+      - "feature/**"
+      - "develop"
 
   break_build_policy_findings: true
   break_build_on_error: true
