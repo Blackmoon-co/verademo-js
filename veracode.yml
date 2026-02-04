@@ -14,16 +14,9 @@ veracode_static_scan:
       - synchronize
     target_branch:
       - "main"
-      - "develop"
 
   analysis_branch: "main"
   analysis_on_platform: true
-
-  sandbox:
-    when:
-      branch:
-        equals: develop
-    name: develop-sandbox
 
   break_build_policy_findings: true
   break_build_invalid_policy: true
