@@ -5,7 +5,6 @@ veracode_static_scan:
     trigger: true
     branches_to_run:
       - "feature/**"
-      - "develop"
 
   pull_request:
     trigger: true
@@ -29,7 +28,6 @@ veracode_sca_scan:
     trigger: true
     branches_to_run:
       - "feature/**"
-      - "develop"
 
   break_build_on_error: true
   break_build_policy_findings: true
@@ -37,9 +35,16 @@ veracode_sca_scan:
 
 veracode_iac_secrets_scan:
   push:
+      trigger: true
+      branches_to_run:
+        - "feature/**"
+   pull_request:
     trigger: true
-    branches_to_run:
-      - "*"
+    action:
+      - opened
+      - synchronize
+    target_branch:
+      - "main"
 
   break_build_policy_findings: true
   break_build_on_error: true
