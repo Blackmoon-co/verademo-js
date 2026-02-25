@@ -1,12 +1,11 @@
 veracode_static_scan:
-  artifact_file: app.zip
+#  artifact_file: app.zip
 
   push:
     trigger: true
     branches_to_run:
       - "feature/**"
       - "develop"
-      - "main"
 
   pull_request:
     trigger: true
@@ -40,8 +39,7 @@ veracode_iac_secrets_scan:
   push:
     trigger: true
     branches_to_run:
-      - "feature/**"
-      - "develop"
+      - "*"
 
   break_build_policy_findings: true
   break_build_on_error: true
