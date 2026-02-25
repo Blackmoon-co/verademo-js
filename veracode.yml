@@ -1,5 +1,5 @@
 veracode_static_scan:
-#  artifact_file: app.zip
+  artifact_file: app.zip
 
   push:
     trigger: true
