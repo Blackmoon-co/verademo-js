@@ -1,6 +1,4 @@
 veracode_static_scan:
-  artifact_file: app.zip
-
   push:
     trigger: true
     branches_to_run:
