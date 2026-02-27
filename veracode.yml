@@ -19,7 +19,7 @@ veracode_static_scan:
 
   break_build_policy_findings: true
   break_build_invalid_policy: true
-  break_build_on_error: false
+  break_build_on_error: true
   policy: "Veracode Recommended Medium + SCA"
 
 
@@ -38,7 +38,8 @@ veracode_iac_secrets_scan:
       trigger: true
       branches_to_run:
         - "feature/**"
-   pull_request:
+  
+  pull_request:
     trigger: true
     action:
       - opened
