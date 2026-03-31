@@ -10,9 +10,9 @@ veracode_static_scan:
       - opened
       - synchronize
     target_branch:
-      - "main"
+      - "develop"
 
-  analysis_branch: "main"
+  analysis_branch: "develop"
   analysis_on_platform: true
 
   break_build_policy_findings: true
@@ -43,7 +43,7 @@ veracode_iac_secrets_scan:
       - opened
       - synchronize
     target_branch:
-      - "main"
+      - "develop"
 
   break_build_policy_findings: true
   break_build_on_error: true
